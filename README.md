@@ -1,3 +1,16 @@
+### Project using https://rickandmortyapi.com/.
+
+You can add one Rick and one Morty to your party by clicking on image.
+Your current party can be seen in the bottom.
+Clicking on cross button would exclude current character from search results until the page reloads.
+
+Project using - React (hooks), Graphql, Typescript, styled-components.
+
+</br>
+</br>
+</br>
+</br>
+</br>
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts

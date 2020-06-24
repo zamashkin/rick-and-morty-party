@@ -1,26 +1,29 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from 'react';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+import SearchInput from './Components/SearchInput';
+import ResultsList from './Components/ResultsList';
+import Party from './Components/Party';
+import styled from 'styled-components';
+
+const AppWrapper = styled.div`
+    margin: 0 auto;
+    width: 1200px;
+`;
+
+function App(): JSX.Element {
+    const [inputValue, setInputValue] = useState('');
+
+    function showResults(value: string) {
+        setInputValue(value);
+    }
+
+    return (
+        <AppWrapper>
+            <SearchInput onValueChange={showResults} />
+            <ResultsList inputValue={inputValue} />
+            <Party />
+        </AppWrapper>
+    );
 }
 
 export default App;

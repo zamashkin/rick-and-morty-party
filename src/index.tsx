@@ -1,14 +1,30 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import * as serviceWorker from './serviceWorker';
+import ApolloClient, { InMemoryCache } from 'apollo-boost';
+import { ApolloProvider } from '@apollo/react-hooks';
+
 import './index.css';
 import App from './App';
-import * as serviceWorker from './serviceWorker';
+
+const client = new ApolloClient({
+    uri: 'https://rickandmortyapi.com/graphql',
+    cache: new InMemoryCache(),
+});
+
+client.cache.writeData({
+    data: {
+        excludedCharactersIds: [],
+    },
+});
 
 ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
-  document.getElementById('root')
+    <React.StrictMode>
+        <ApolloProvider client={client}>
+            <App />
+        </ApolloProvider>
+    </React.StrictMode>,
+    document.getElementById('root'),
 );
 
 // If you want your app to work offline and load faster, you can change
