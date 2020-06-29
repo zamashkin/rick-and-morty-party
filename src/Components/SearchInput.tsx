@@ -24,9 +24,7 @@ export default function SearchInput(props: Props): JSX.Element {
         const { value } = e.currentTarget;
 
         setInputValue(value);
-        if (value.length > 2) {
-            props.onValueChange(value);
-        }
+        props.onValueChange(value);
     }
 
     return <Input onChange={handleInputChange} value={inputValue} />;

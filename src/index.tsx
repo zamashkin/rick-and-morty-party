@@ -4,12 +4,13 @@ import * as serviceWorker from './serviceWorker';
 import ApolloClient, { InMemoryCache } from 'apollo-boost';
 import { ApolloProvider } from '@apollo/react-hooks';
 
-import './index.css';
 import App from './App';
+import { resolvers } from './resolvers/resolvers';
 
 const client = new ApolloClient({
     uri: 'https://rickandmortyapi.com/graphql',
     cache: new InMemoryCache(),
+    resolvers,
 });
 
 client.cache.writeData({

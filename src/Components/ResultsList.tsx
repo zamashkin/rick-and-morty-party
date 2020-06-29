@@ -14,8 +14,29 @@ const ResultItems = styled.div`
     justify-content: center;
 `;
 
+const ErrorMessage = styled.div`
+    font: 30px Roboto;
+`;
+
 interface Props {
     inputValue: string;
+    onResultItemClick: (character: Character) => void;
+}
+
+interface CharacterQueryVars {
+    value: string;
+}
+
+export interface Character {
+    id: number;
+    name: string;
+    image: string;
+}
+interface CharacterQuery {
+    characters: {
+        results: Character[];
+    };
+    excludedCharactersIds: number[];
 }
 
 const GET_RESULTS = gql`
@@ -27,24 +48,36 @@ const GET_RESULTS = gql`
                 image
             }
         }
+
+        excludedCharactersIds @client
     }
 `;
 
 export default function ResultsList(props: Props): JSX.Element {
-    const { loading, error, data } = useQuery(GET_RESULTS, { variables: { value: props.inputValue } });
+    const { loading, error, data } = useQuery<CharacterQuery, CharacterQueryVars>(GET_RESULTS, {
+        variables: { value: props.inputValue },
+    });
 
     let content;
 
     if (loading) {
         content = <CircularProgress />;
     } else if (error) {
-        content = <div> Произошла ошибка. Попробуйте поискать что-то другое. </div>;
-    } else {
-        const results = data.characters.results as Array<{ id: number; name: string; image: string }>;
+        content = <ErrorMessage> An error occured. Try to search something else. </ErrorMessage>;
+    } else if (data) {
+        const { results } = data.characters;
 
-        content = results.map((item) => {
-            return <ResultItem id={item.id} name={item.name} imageUrl={item.image} key={item.id} />;
-        });
+        content = results
+            .filter((char) => !data.excludedCharactersIds.includes(char.id))
+            .map((char) => {
+                return (
+                    <ResultItem
+                        onResultItemClick={props.onResultItemClick}
+                        character={char}
+                        key={char.id}
+                    />
+                );
+            });
     }
 
     return <ResultItems> {content} </ResultItems>;
